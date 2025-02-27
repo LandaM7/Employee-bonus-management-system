@@ -1,0 +1,6 @@
+@Employee_bonus_management_system_HostAddress = http://localhost:5042
+
+GET {{Employee_bonus_management_system_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
