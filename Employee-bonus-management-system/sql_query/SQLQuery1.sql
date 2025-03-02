@@ -78,3 +78,6 @@ CREATE TABLE RecommenderEmployee (
     CONSTRAINT FK_Employee_Employee FOREIGN KEY (EmployeeId) REFERENCES Employees(Id) ,
 CONSTRAINT FK_RecommenderEmployee_Employee FOREIGN KEY (RecommenderEmployeeId) REFERENCES Employees(Id),
    );
+
+   use HRManagement
+alter table Employees  add EmployeeRole NVARCHAR(100) 

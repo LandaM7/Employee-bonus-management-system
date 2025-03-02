@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeBonusManagement.Infrastructure
+namespace EmployeeBonusManagement.Infrastructure.Data
 {
-	internal class AppDbContext
-	{
-	}
+    internal class AppDbContext
+    {
+    }
 }
