@@ -19,8 +19,8 @@ namespace EmployeeBonusManagement.Core.Entities
 	    public DateTime DateOfBirth { get; set; }
 	    public DateTime HireDate { get; set; }
 	    public string DepartmentId { get; set; }
-	    public bool IsActive { get; set; }
-
+	    public int IsActive { get; set; }
+		public decimal Salary { get; set; }
 	    
 
 	    public string? RecommenderEmployeeId { get; set; }

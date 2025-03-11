@@ -4,6 +4,7 @@ using EmployeeBonusManagement.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeBonusManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311082919_EnsureRolesExist")]
+    partial class EnsureRolesExist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,8 +60,8 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IsActive")
-                        .HasColumnType("Int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -95,9 +98,6 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
 
                     b.Property<string>("RecommenderEmployeeId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("Decimal");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

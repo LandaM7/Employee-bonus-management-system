@@ -25,13 +25,41 @@ namespace EmployeeBonusManagement.Infrastructure.Data
 			{
 				entity.Property(e => e.FirstName).HasMaxLength(100);
 				entity.Property(e => e.LastName).HasMaxLength(100);
-				entity.Property(e => e.PersonalNumber).HasMaxLength(50); // Set length for PersonalNumber if needed
-				entity.Property(e => e.DateOfBirth).HasColumnType("datetime2"); // Set the column type for DateOfBirth
-				entity.Property(e => e.HireDate).HasColumnType("datetime2"); // Same for HireDate
-				entity.Property(e => e.DepartmentId).HasMaxLength(50); // Set length for DepartmentId if needed
+				entity.Property(e => e.PersonalNumber).HasMaxLength(50); 
+				entity.Property(e => e.DateOfBirth).HasColumnType("datetime2"); 
+				entity.Property(e => e.HireDate).HasColumnType("datetime2"); 
+				entity.Property(e => e.DepartmentId).HasMaxLength(50); 
+				//salary is  not added 
 
-				// Optional: You can add other custom configurations (like indexes, etc.)
+				entity.Property(e => e.IsActive).HasColumnType("Int");
+				entity.Property(e => e.Salary).HasColumnType("Decimal");
 			});
+
+			builder.Entity<ApplicationRoles>(entity =>
+			{
+				entity.Property(e => e.RoleType)
+					.HasConversion<string>() // Convert Enum to string in DB
+					.IsRequired() // Ensure it is not nullable
+					.HasDefaultValue(Role.User);
+			});
+
+			builder.Entity<ApplicationRoles>().HasData(
+				new ApplicationRoles
+				{
+					Id = "B2A0E6F1-1E30-4D4B-97E1-5B3F0A5D6A10",
+					Name = "Admin",
+					NormalizedName = "ADMIN",
+					RoleType = Role.Admin 
+				},
+				new ApplicationRoles
+				{
+					Id = "D3C1F7A2-2F41-5E5C-88F2-6C4G1B6E7B21",
+					Name = "User",
+					NormalizedName = "USER",
+					RoleType = Role.User 
+				}
+			);
+
 		}
 	}
 }
