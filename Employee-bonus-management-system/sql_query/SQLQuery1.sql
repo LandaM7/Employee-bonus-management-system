@@ -1,13 +1,13 @@
 ﻿Create Database  HRManagement
 
 --დეპარტამენტები
-USE HRManagement
+USE BonusSystem
 CREATE TABLE Departments (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    [Name] NVARCHAR(255) UNIQUE NOT NULL,  -- დეპარტამენტის უნიკალური დასახელება
-    CreateByUserId INT NULL,  -- ვინ შექმნა ეს ჩანაწერი
-    CreateDate DATE DEFAULT GETDATE(),  -- შექმნის თარიღი
-    IsActive INT DEFAULT 1,  -- დეპარტამენტის აქტიურობა (1 = აქტიური)
+    [Name] NVARCHAR(255) UNIQUE NOT NULL, 
+    CreateByUserId INT NULL,  
+    CreateDate DATE DEFAULT GETDATE(), 
+    IsActive INT DEFAULT 1,  
     );
 
 

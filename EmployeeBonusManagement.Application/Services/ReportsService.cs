@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeBonusManagement.Application.Services
 {
-    class AddBonus
+    class ReportsService
     {
     }
-}  
+}

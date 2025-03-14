@@ -10,27 +10,32 @@ namespace EmployeeBonusManagement.Application.Services
 {
 	public class RoleSeederService
 	{
+		private readonly RoleManager<ApplicationRoles> _roleManager;
 
-		private readonly RoleManager<IdentityRole> _roleManager;
-
-		public RoleSeederService(RoleManager<IdentityRole> roleManager)
+		public RoleSeederService(RoleManager<ApplicationRoles> roleManager)
 		{
 			_roleManager = roleManager;
 		}
 
 		public async Task SeedRolesAsync()
 		{
-			string[] roleNames = { "AdminEmployee", "Employee" };
+			var roleNames = Enum.GetValues(typeof(Role))
+				.Cast<Role>()
+				.Select(r => r.ToString())
+				.ToArray();
 
 			foreach (var roleName in roleNames)
 			{
 				if (!await _roleManager.RoleExistsAsync(roleName))
 				{
-					await _roleManager.CreateAsync(new IdentityRole(roleName));
+					var roleEnum = Enum.Parse<Role>(roleName); // Convert string back to enum
+					await _roleManager.CreateAsync(new ApplicationRoles(roleEnum));
 				}
 			}
 		}
 	}
+
+
 
 }
 

@@ -19,7 +19,8 @@ CREATE TABLE Bonuses (
 
 
 alter table  AspNetUsers add Constraint FK_Employee_Department FOREIGN KEY (DepartmentID) REFERENCES Departments(Id)
-
+alter table Bonuses add Constraint FK_CreateByUser_User  FOREIGN  KEY (CreateByUserId) REFERENCES AspNetUsers(Id)
+alter table Departments add Constraint FK_DepartmentCreatedByUser_User  FOREIGN  KEY (CreateByUserId) REFERENCES AspNetUsers(Id)
 
 --USE BonusSystem;
 --drop table Departments

@@ -5,7 +5,7 @@
 namespace EmployeeBonusManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCustomIdentityModels : Migration
+    public partial class addSalary : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

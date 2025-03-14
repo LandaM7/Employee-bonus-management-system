@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeBonusManagement.Infrastructure.Configurations
+namespace EmployeeBonusManagement.Application.Services
 {
-	internal class DatabaseConfig
-	{
+    class AddBonusService
+    {
 
-	}
-}
+
+    }
+}  

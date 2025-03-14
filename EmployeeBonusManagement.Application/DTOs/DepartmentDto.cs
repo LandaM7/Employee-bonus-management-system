@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeBonusManagement.Application.DTOs
 {
-	internal class DepartmentDto
+	public class DepartmentDto
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }

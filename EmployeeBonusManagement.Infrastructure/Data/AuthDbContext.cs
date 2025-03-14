@@ -10,10 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeBonusManagement.Infrastructure.Data
 {
-	public class AuthDbContext : IdentityDbContext<ApplicationUser>
+	public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRoles , string>
 	{
 		public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
-		{}
+		{
+
+		}
 
 
 		protected override void OnModelCreating(ModelBuilder builder)
@@ -32,7 +34,7 @@ namespace EmployeeBonusManagement.Infrastructure.Data
 				//salary is  not added 
 
 				entity.Property(e => e.IsActive).HasColumnType("Int");
-				entity.Property(e => e.Salary).HasColumnType("Decimal");
+				entity.Property(e => e.Salary).HasColumnType("DECIMAL(10,2)");
 			});
 
 			builder.Entity<ApplicationRoles>(entity =>
@@ -57,8 +59,7 @@ namespace EmployeeBonusManagement.Infrastructure.Data
 					Name = "User",
 					NormalizedName = "USER",
 					RoleType = Role.User 
-				}
-			);
+				});
 
 		}
 	}

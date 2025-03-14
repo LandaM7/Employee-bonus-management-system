@@ -22,6 +22,55 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EmployeeBonusManagement.Core.Entities.ApplicationRoles", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("RoleType")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("User");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "B2A0E6F1-1E30-4D4B-97E1-5B3F0A5D6A10",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN",
+                            RoleType = "Admin"
+                        },
+                        new
+                        {
+                            Id = "D3C1F7A2-2F41-5E5C-88F2-6C4G1B6E7B21",
+                            Name = "User",
+                            NormalizedName = "USER",
+                            RoleType = "User"
+                        });
+                });
+
             modelBuilder.Entity("EmployeeBonusManagement.Core.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -97,7 +146,7 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Salary")
-                        .HasColumnType("Decimal");
+                        .HasColumnType("DECIMAL(10,2)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -122,42 +171,6 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
                     b.HasIndex("RecommenderEmployeeId");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasDiscriminator().HasValue("IdentityRole");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -266,35 +279,6 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EmployeeBonusManagement.Core.Entities.ApplicationRoles", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
-
-                    b.Property<string>("RoleType")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("User");
-
-                    b.HasDiscriminator().HasValue("ApplicationRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "B2A0E6F1-1E30-4D4B-97E1-5B3F0A5D6A10",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN",
-                            RoleType = "Admin"
-                        },
-                        new
-                        {
-                            Id = "D3C1F7A2-2F41-5E5C-88F2-6C4G1B6E7B21",
-                            Name = "User",
-                            NormalizedName = "USER",
-                            RoleType = "User"
-                        });
-                });
-
             modelBuilder.Entity("EmployeeBonusManagement.Core.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("EmployeeBonusManagement.Core.Entities.ApplicationUser", "RecommenderEmployee")
@@ -306,7 +290,7 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("EmployeeBonusManagement.Core.Entities.ApplicationRoles", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -333,7 +317,7 @@ namespace EmployeeBonusManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("EmployeeBonusManagement.Core.Entities.ApplicationRoles", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

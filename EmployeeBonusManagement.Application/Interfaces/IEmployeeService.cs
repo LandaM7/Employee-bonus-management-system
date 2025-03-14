@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeBonusManagement.Infrastructure.Configurations
+namespace EmployeeBonusManagement.Application.Interfaces
 {
-	internal class DatabaseConfig
-	{
+    public interface IEmployeeService
+    {
 
-	}
+    }
 }

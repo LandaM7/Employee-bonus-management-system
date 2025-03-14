@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeBonusManagement.Infrastructure.Configurations
+namespace EmployeeBonusManagement.Infrastructure.UnitOfWork
 {
-	internal class DatabaseConfig
-	{
-
-	}
+    class UnitOfWork
+    {
+    }
 }
