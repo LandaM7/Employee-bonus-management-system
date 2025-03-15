@@ -8,5 +8,6 @@ namespace EmployeeBonusManagement.Infrastructure.UnitOfWork
 {
     class UnitOfWork
     {
+
     }
 }
