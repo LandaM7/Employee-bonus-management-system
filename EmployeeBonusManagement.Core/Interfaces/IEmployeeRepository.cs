@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeBonusManagement.Infrastructure.Repositories.Interfaces
+namespace EmployeeBonusManagement.Core.Interfaces
 {
     public interface IEmployeeRepository<T> where T : class
     {
-		Task<IEnumerable<T>> GetAllAsync();
+		Task<IEnumerable<T>> GetAllEmployeesAsync();
 	}
 }

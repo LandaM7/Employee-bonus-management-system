@@ -1,32 +1,41 @@
 using EmployeeBonusManagement.Application.Services;
-using EmployeeBonusManagement.Application.Interfaces;
 using EmployeeBonusManagement.Core.Entities;
 using EmployeeBonusManagement.Infrastructure.Data;
 using EmployeeBonusManagement.Infrastructure.Repositories;
-using EmployeeBonusManagement.Infrastructure.Repositories.Interfaces;
+using EmployeeBonusManagement.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using EmployeeBonusManagement.Application.Services.Interfaces;
+using EmployeeBonusManagement.Application.DTOs;
+using IEmailSender = EmployeeBonusManagement.Core.Interfaces.IEmailSender;
+using NoOpEmailSender = EmployeeBonusManagement.Application.Services.NoOpEmailSender;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AuthDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
+builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
+
+
+builder.Services.AddScoped(typeof(IEmployeeRepository<>), typeof(EmployeeRepository<>));
+builder.Services.AddScoped<IEmployeeService<EmployeeDto>, ManageEmployeesService>();
+
 //Register Identity
 builder.Services.AddIdentity<ApplicationUser, ApplicationRoles>()
 	.AddEntityFrameworkStores<AuthDbContext>()
 	.AddDefaultTokenProviders();
 
-builder.Services.AddScoped(typeof(IEmployeeRepository<>), typeof(EmployeeRepository<>));
-
-builder.Services.AddScoped<IEmployeeService, ManageEmployeesService>();
 
 //Register Authorization & Authentication
 builder.Services.AddAuthorization();
-builder.Services.AddSingleton<IEmailSender, Microsoft.AspNetCore.Identity.UI.Services.NoOpEmailSender>();
+builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
 
 //  Register RoleSeeder 
 builder.Services.AddScoped<RoleSeederService>();

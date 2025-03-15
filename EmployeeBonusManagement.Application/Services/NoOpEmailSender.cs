@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EmployeeBonusManagement.Application.Interfaces;
+using EmployeeBonusManagement.Core.Interfaces;
 
 
 namespace EmployeeBonusManagement.Application.Services

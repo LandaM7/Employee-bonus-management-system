@@ -26,3 +26,20 @@ alter table Departments add Constraint FK_DepartmentCreatedByUser_User  FOREIGN 
 --drop table Departments
 --go 
 --drop table Bonuses 
+
+
+
+SELECT u.Id, u.FirstName, u.LastName, u.Email,  
+							u.DateOfBirth, u.HireDate, u.Salary AS Role 
+				            FROM AspNetUsers u
+				            LEFT JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+				            LEFT JOIN AspNetRoles r ON ur.RoleId = r.Id;
+
+
+							SELECT COLUMN_NAME
+SELECT COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'AspNetUsers' AND COLUMN_NAME = 'Salary';
+
+use BonusSystem
+ALTER TABLE AspNetUsers ADD Salary DECIMAL(10,2) NOT NULL DEFAULT 0;
