@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace EmployeeBonusManagement.Core.Interfaces
 {
-    interface IEmployeeManagementRepository<T> where T: class
+	public interface IEmployeeManagementRepository<T> where T: class
     {
 	    Task AddAsync(T entity);
-	    void Update(T entity);
-	    void Delete(T entity); 
+	    Task UpdateAsync(T entity);
+	    Task DeleteAsync(T entity);
+	    Task<IEnumerable<T>> GetAllAsync();
 	}
 }

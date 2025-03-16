@@ -1,9 +1,11 @@
 ﻿using EmployeeBonusManagement.Application.DTOs;
+using EmployeeBonusManagement.Core.Entities;
 
 namespace EmployeeBonusManagement.Application.Services.Interfaces
 {
-	public interface IEmployeeService<T> where T:class
+	public interface IEmployeeService<T>
 	{
-		public  Task<IEnumerable<T>> GetAllEmployeesAsync();
+		Task AddEmployeeAsync(EmployeeDto employeeDto);
+		Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync();
 	}
 }

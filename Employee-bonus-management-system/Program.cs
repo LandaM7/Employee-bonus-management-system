@@ -5,13 +5,13 @@ using EmployeeBonusManagement.Infrastructure.Repositories;
 using EmployeeBonusManagement.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using EmployeeBonusManagement.Application.Services.Interfaces;
 using EmployeeBonusManagement.Application.DTOs;
 using IEmailSender = EmployeeBonusManagement.Core.Interfaces.IEmailSender;
 using NoOpEmailSender = EmployeeBonusManagement.Application.Services.NoOpEmailSender;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using EmployeeBonusManagement.Infrastructure.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,8 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 
 builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
 
+builder.Services.AddScoped(typeof(IEmployeeManagementRepository<>), typeof(EmployeeManagementRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped(typeof(IEmployeeRepository<>), typeof(EmployeeRepository<>));
 builder.Services.AddScoped<IEmployeeService<EmployeeDto>, ManageEmployeesService>();
@@ -39,6 +41,8 @@ builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
 
 //  Register RoleSeeder 
 builder.Services.AddScoped<RoleSeederService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
