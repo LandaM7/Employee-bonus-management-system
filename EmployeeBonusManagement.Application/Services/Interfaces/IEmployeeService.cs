@@ -7,5 +7,6 @@ namespace EmployeeBonusManagement.Application.Services.Interfaces
 	{
 		Task AddEmployeeAsync(EmployeeDto employeeDto);
 		Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync();
+		Task<EmployeeDto> GetEmployeeByIdAsync(string id);
 	}
 }

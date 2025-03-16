@@ -25,5 +25,7 @@ namespace EmployeeBonusManagement.Infrastructure.Repositories
 	    public async Task UpdateAsync(T entity) => _dbSet.Update(entity);
 	    public async Task DeleteAsync(T entity) => _dbSet.Remove(entity);
 	    public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
+
+		public async Task<T> GetByIdAsync(string id) => await _dbSet.FindAsync(id);
 	}
 }

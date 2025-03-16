@@ -24,6 +24,14 @@ namespace Employee_bonus_management_system.Controllers
 			return Ok(employees);
 		}
 
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetEmployeeById(string id)
+		{
+			var employees = await _employeeService.GetEmployeeByIdAsync(id);
+			return Ok(employees);
+		}
+
+
 		[HttpPost("add")]
 		public async Task<IActionResult> AddEmployee([FromBody] EmployeeDto employee)
 		{

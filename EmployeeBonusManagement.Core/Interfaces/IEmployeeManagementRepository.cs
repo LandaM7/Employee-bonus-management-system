@@ -12,5 +12,6 @@ namespace EmployeeBonusManagement.Core.Interfaces
 	    Task UpdateAsync(T entity);
 	    Task DeleteAsync(T entity);
 	    Task<IEnumerable<T>> GetAllAsync();
+	    Task<T> GetByIdAsync(string id);
 	}
 }

@@ -36,6 +36,12 @@ namespace EmployeeBonusManagement.Application.Services
 		    var employees = await _unitOfWork.Employees.GetAllAsync();
 		    return _mapper.Map<IEnumerable<EmployeeDto>>(employees); // Convert Entity → DTO
 	    }
+
+	    public async Task<EmployeeDto> GetEmployeeByIdAsync(string id)
+	    {
+		    var employee = await _unitOfWork.Employees.GetByIdAsync(id);  // Get entity by id
+		    return _mapper.Map<EmployeeDto>(employee);  // Map entity to DTO
+	    }
 	}
 
 
