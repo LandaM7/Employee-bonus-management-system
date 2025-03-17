@@ -10,7 +10,6 @@ namespace EmployeeBonusManagement.Application.DTOs
 {
 	public  class EmployeeDto
 	{
-		public string Id { get; set; }
 		public string UserName { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -23,5 +22,6 @@ namespace EmployeeBonusManagement.Application.DTOs
 		public int IsActive { get; set; }
 		public decimal Salary { get; set; }
 		public string? RecommenderEmployeeId { get; set; }
+		public string Role { get; set; }
 	}
 }

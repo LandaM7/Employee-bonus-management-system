@@ -1,113 +1,70 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using EmployeeBonusManagement.Application.DTOs;
+using EmployeeBonusManagement.Application.Services.Interfaces;
 using EmployeeBonusManagement.Core.Entities;
+using EmployeeBonusManagement.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EmployeeBonusManagement.Application.Services
 {
-    class AuthService
-    {
-		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly RoleManager<IdentityRole> _roleManager;
-		private readonly IConfiguration _configuration;
-		private readonly IHttpContextAccessor _httpContextAccessor;
+	public class AuthService : IAuthService
+	{
 
-		public AuthService(
-			UserManager<ApplicationUser> userManager,
-			SignInManager<ApplicationUser> signInManager,
-			RoleManager<IdentityRole> roleManager,
-			IConfiguration configuration,
-			IHttpContextAccessor httpContextAccessor)
+		private readonly IEmployeeRepository<ApplicationUser> _employeeRepository; // Change to ApplicationUser
+		private readonly IJwtService _jwtService;
+
+		public AuthService(IEmployeeRepository<ApplicationUser> employeeRepository, IJwtService jwtService)
 		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_roleManager = roleManager;
-			_configuration = configuration;
-			_httpContextAccessor = httpContextAccessor;
+			_employeeRepository = employeeRepository;
+			_jwtService = jwtService;
 		}
 
 		public async Task<AuthResponse> LoginAsync(LoginDto loginDto)
 		{
-
-			var user = await _userManager.FindByEmailAsync(loginDto.Email);
-
-
-			// Ensure user has Employee role
-			if (!(await _userManager.IsInRoleAsync(user, "Employee")))
+			Console.WriteLine($"Attempting login for email: {loginDto.Email}");
+			var user = await _employeeRepository.GetUserByEmailAsync(loginDto.Email.ToLower());
+			if (user == null)
 			{
-				await _userManager.AddToRoleAsync(user, "Employee");
+				Console.WriteLine("User not found");
+				return new AuthResponse(false) { Success = false };
 			}
 
-			// Generate JWT & Refresh Token
-			var token = GenerateJwtToken(user);
-			var refreshToken = GenerateRefreshToken();
-			user.RefreshToken = refreshToken;
-			await _userManager.UpdateAsync(user);
+			Console.WriteLine("User Found");
 
-			SetRefreshTokenCookie(refreshToken);
-
-
-			if (user == null || !(await _userManager.CheckPasswordAsync(user, loginDto.Password)))
+			if (!await _employeeRepository.CheckPasswordAsync(user, loginDto.Password))
 			{
-				return new AuthResponse(success: false);
+				Console.WriteLine("Incorrect password");
+				return new AuthResponse(false) { Success = false };
 			}
 
+			Console.WriteLine("Password Correct");
 
-			return new AuthResponse(success: true, accessToken: token, refreshToken: refreshToken,
-				expiration: DateTime.UtcNow.AddDays(7), userEmail: loginDto.Email, roles: [loginDto.Role.ToString()]);
-		}
+			var roles = await _employeeRepository.GetUserRolesAsync(user);
+			var token = _jwtService.GenerateToken(user, roles);
 
-		private void SetRefreshTokenCookie(string refreshToken)
-		{
-			var response = _httpContextAccessor.HttpContext.Response;
-			response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+			if (token == null || string.IsNullOrEmpty(token.AccessToken))
 			{
-				HttpOnly = true,
-				Secure = true, // Use only in production with HTTPS
-				SameSite = SameSiteMode.Strict,
-				Expires = DateTime.UtcNow.AddDays(7)
-			});
-		}
+				Console.WriteLine("Token generation failed");
+			}
 
-		private string GenerateJwtToken(ApplicationUser user)
-		{
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-			var claims = new List<Claim>
-		{
-			new Claim(ClaimTypes.Name, user.UserName),
-			new Claim(ClaimTypes.Email, user.Email),
-			new Claim(ClaimTypes.Role, "Employee")
-		};
-
-			var token = new JwtSecurityToken(
-				_configuration["Jwt:Issuer"],
-				_configuration["Jwt:Audience"],
-				claims,
-				expires: DateTime.UtcNow.AddHours(1),
-				signingCredentials: creds);
-
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
-
-		
-
-		private string GenerateRefreshToken()
-		{
-			var refreshToken = Guid.NewGuid().ToString();
-
-			return refreshToken;
+			return new AuthResponse(true)
+			{
+				AccessToken = token.AccessToken,
+				RefreshToken = token.RefreshToken,
+				Expiration = token.Expiration,
+				UserEmail = user.Email,
+				Roles = roles.ToList(),
+				Success = true
+			};
 		}
 	}
+
 }

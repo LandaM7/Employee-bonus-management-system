@@ -29,22 +29,33 @@ builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionStri
 builder.Services.AddScoped(typeof(IEmployeeManagementRepository<>), typeof(EmployeeManagementRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped(typeof(IEmployeeRepository<>), typeof(EmployeeRepository<>));
+builder.Services.AddScoped<IEmployeeRepository<ApplicationUser>, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService<EmployeeDto>, ManageEmployeesService>();
 
 //Register Identity
 builder.Services.AddIdentity<ApplicationUser, ApplicationRoles>()
 	.AddEntityFrameworkStores<AuthDbContext>()
 	.AddDefaultTokenProviders();
-
+builder.Services.AddScoped<UserManager<ApplicationUser>>();
+builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 
 //Register Authorization & Authentication
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<RoleAssignmentService>();
+
+
 builder.Services.AddAuthorization();
+
+
 builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
 
 //  Register RoleSeeder 
 builder.Services.AddScoped<RoleSeederService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<RoleManager<ApplicationRoles>>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>

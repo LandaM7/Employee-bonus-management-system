@@ -13,7 +13,8 @@ namespace Employee_bonus_management_system.Controllers
 	{
 		private readonly IEmployeeService<EmployeeDto> _employeeService;
 
-		public EmployeesController(IEmployeeService<EmployeeDto> employeeService)
+
+		public EmployeesController(IEmployeeService<EmployeeDto> employeeService )
 		{
 			_employeeService = employeeService;
 		}
@@ -33,7 +34,7 @@ namespace Employee_bonus_management_system.Controllers
 			return Ok(employees);
 		}
 
-		[Authorize(Roles = "Admin")]
+		
 		[HttpPost("add")]
 		public async Task<IActionResult> AddEmployee([FromBody] EmployeeDto employee)
 		{
@@ -42,19 +43,20 @@ namespace Employee_bonus_management_system.Controllers
 		}
 
 
-		[Authorize(Roles = "Admin")]
-		[HttpGet("admin-only")]
-		public IActionResult GetAdminData()
-		{
-			return Ok("This is protected data for Admins only.");
-		}
 
-		[Authorize(Roles = "Employee")]
-		[HttpGet("employee-only")]
-		public IActionResult GetEmployeeData()
-		{
-			return Ok("This is protected data for Employees only.");
-		}
+		//[Authorize(Roles = "Admin")]
+		//[HttpGet("admin-only")]
+		//public IActionResult GetAdminData()
+		//{
+		//	return Ok("This is protected data for Admins only.");
+		//}
+
+		//[Authorize(Roles = "Employee")]
+		//[HttpGet("employee-only")]
+		//public IActionResult GetEmployeeData()
+		//{
+		//	return Ok("This is protected data for Employees only.");
+		//}
 
 
 	}

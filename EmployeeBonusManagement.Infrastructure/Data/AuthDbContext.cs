@@ -31,7 +31,11 @@ namespace EmployeeBonusManagement.Infrastructure.Data
 				entity.Property(e => e.DateOfBirth).HasColumnType("datetime2");
 				entity.Property(e => e.HireDate).HasColumnType("datetime2");
 				entity.Property(e => e.DepartmentId).HasMaxLength(50);
-				//salary is  not added 
+
+
+				entity.Property(u => u.NormalizedEmail).HasMaxLength(256);
+				entity.Property(u => u.NormalizedUserName).HasMaxLength(256);
+
 
 				entity.Property(e => e.IsActive).HasColumnType("Int");
 				entity.Property(e => e.Salary).HasColumnType("DECIMAL(10,2)");

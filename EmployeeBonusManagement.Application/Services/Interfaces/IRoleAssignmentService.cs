@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EmployeeBonusManagement.Application.DTOs;
 
 namespace EmployeeBonusManagement.Application.Services.Interfaces
 {
-    public interface IAuthService
+    interface IRoleAssignmentService
     {
-        //fix this 
-	    Task<AuthResponse> LoginAsync(LoginDto loginDto);
-
+	    Task<bool> AssignRoleToUserAsync(string userId, string roleName);
+	    Task<bool> RemoveRoleFromUserAsync(string userId, string roleName);
     }
 }
