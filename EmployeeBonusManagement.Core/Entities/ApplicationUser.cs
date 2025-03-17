@@ -26,5 +26,8 @@ namespace EmployeeBonusManagement.Core.Entities
 	    public string? RecommenderEmployeeId { get; set; }
 	    [ForeignKey("RecommenderEmployeeId")]
 	    public ApplicationUser? RecommenderEmployee { get; set; }
+
+	    public string RefreshToken { get; set; }
+
 	}
 }
